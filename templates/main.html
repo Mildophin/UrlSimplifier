@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <p> URL shortener by Milan </p>
+     <form action="" method="post">
+         {% csrf_token %}
+         <label for="given_url">URL to shorten:</label>
+         <input type="text" id="given_url" name="given_url" required minlength="4" maxlength="200" size="10">
+         <input type = "submit" value = "Submit"/>
+     </form>
+
+{% if is_given_url_right == False %}
+    <p>Please give a correct url address</p>
+{% endif %}
+
+{% if simplified_url %}
+    <label>Url simplified:</label>
+    <a href="http://127.0.0.1:8000/{{ simplified_url }}" target="_blank">http://127.0.0.1:8000/{{ simplified_url }}</a>
+{% endif %}
+
+</body>
+<footer>
+
+</footer>
+</html>
