@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
-from Base.functions import clean_url_maker
 from Base.models import SimplifiedUrl
 
 
@@ -19,7 +18,7 @@ def main(request):
         except ValidationError:
             return render(request, 'main.html', context={"is_given_url_right": False})
         # Appel de la fonction qui créé une url aléatoire et qui n'existe pas encore
-        simplified_url_object = clean_url_maker(given_url)
+        simplified_url_object = SimplifiedUrl.create(url_to_redirect=given_url)
         simplified_url = simplified_url_object.redirection_path
         return render(request, 'main.html', context={"simplified_url": simplified_url})
 
