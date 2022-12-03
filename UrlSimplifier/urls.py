@@ -20,5 +20,6 @@ from Base.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', main),
+    path('administration/', administration),
     path('p/<str:redirection_path>', url_shorten)
 ]
