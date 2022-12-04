@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-    <p> URL shortener by Milan </p>
-     <form action="" method="post">
-         {% csrf_token %}
-         <label for="given_url">URL to shorten:</label>
-         <input type="text" id="given_url" name="given_url" required minlength="4" maxlength="200" size="10">
-         <input type = "submit" value = "Submit"/>
-     </form>
-
-{% if is_given_url_right == False %}
-    <p>Please give a correct url address</p>
-{% endif %}
-
-{% if simplified_shortcut %}
-    <label>Url simplified:</label>
-    <a href="http://127.0.0.1:8000/{{ simplified_shortcut }}" target="_blank">http://127.0.0.1:8000/{{ simplified_shortcut }}</a>
-{% endif %}
-
-</body>
-<footer>
-
-</footer>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<title>Homepage</title>
+	</head>
+	<body>
+		{% include 'navbar.html' %}
+		<section class="container mt-3">
+			<form class="row" method="post">
+				{% csrf_token %}
+				<div class="col-auto mb-2">
+					<label for="inputUrl" class="form-label">URL to shorten:</label>
+					<input type="url" size="200" name="given_url" class="form-control" id="inputUrl" placeholder="https://42.fr/" required>
+				</div>
+				{% if is_given_url_right == False %}
+				<div class="alert alert-danger mt-2" role="alert">
+					Please write a valid URL !
+				</div>
+				{% endif %}
+				{% if simplified_shortcut %}
+				<div class="alert alert-success mt-2" role="alert">
+					<p>Simplified URL: </p>
+					<a href="http://127.0.0.1:8000/p/{{ simplified_shortcut }}" target="_blank">http://127.0.0.1:8000/p/{{ simplified_shortcut }}</a>
+				</div>
+				{% endif %}
+				<div class="col-auto">
+					<button type="submit" class="btn btn-primary mt-2">Create a shortcut</button>
+				</div>
+			</form>
+		</section>
+	</body>
 </html>

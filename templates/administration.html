@@ -1,10 +1,36 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<title>Administration</title>
+	</head>
+	<body>
+		{% include 'navbar.html' %}
+		<section class="container mt-3">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">URL shorten</th>
+						<th scope="col">Path</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for url in url_queryset %}
+					<tr>
+						<td class="col-6">{{ url.url_to_redirect }}</td>
+						<td class="col-3"><a href="http://127.0.0.1:8000/p/{{ url.redirection_shortcut }}" target="_blank">http://127.0.0.1:8000/p/{{ url.redirection_shortcut }}</a></td>
+						<td class="col-2"><a href="{% url 'administration' redirection_shortcut=url.redirection_shortcut %}" style="color:red!important;text-decoration: None!important">Delete</a></td>
+					</tr>
+					{% empty %}
+					<td class="col-6">Empty</td>
+					<td class="col-3">Empty</td>
+					<td class="col-2">Empty</td>
+					{% endfor %}
+				</tbody>
+			</table>
+		</section>
+	</body>
 </html>

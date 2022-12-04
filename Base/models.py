@@ -1,16 +1,12 @@
 from django.db import models
 import string,random
 
-class SimplifiedUrl(models.Model):
-    """
-    Modèle des urls simplifiés
-    """
-    redirection_shortcut = models.CharField(max_length=10, unique=True)
-    url_to_redirect = models.URLField(max_length=200)
 
-    def __init__(self, url_to_redirect, redirection_shortcut=None):
-        # Constructeur qui créé une URL simplifiée avec la possibilité de spécifier le raccourci voulu
-        super().__init__(url_to_redirect, redirection_shortcut=None)
+class UrlManager(models.Manager):
+    """
+    Modèle du Manager des SimplifiedUrl, afin de les manipuler correctement avec Django sans passer par le constructeur
+    """
+    def create_url(self, url_to_redirect, redirection_shortcut=None):
         if redirection_shortcut is None:
             # Boucle permettant d'obtenir un raccourci qui n'existe pas encore dans la BDD
             while True:
@@ -21,8 +17,16 @@ class SimplifiedUrl(models.Model):
                     continue
                 else:
                     break
-        self.url_to_redirect=url_to_redirect
-        self.redirection_shortcut=redirection_shortcut
+        url_object = self.create(url_to_redirect=url_to_redirect, redirection_shortcut=redirection_shortcut)
+        return url_object
+
+class SimplifiedUrl(models.Model):
+    """
+    Modèle des urls simplifiés
+    """
+    redirection_shortcut = models.CharField(max_length=10, unique=True)
+    url_to_redirect = models.URLField(max_length=200)
+    objects = UrlManager()
 
     def __str__(self):
         return 'Url simplifié du site ' + str(self.url_to_redirect) + ' avec le raccourci ' + str(self.redirection_shortcut)
